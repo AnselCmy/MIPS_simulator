@@ -50,9 +50,10 @@
  + Pipeline 
  
    &emsp;&emsp;This class here is for pipeline controling, two important part are do stage actions and do buffer, further, ```hazard detection```, ```branch detection``` and ```forward detection``` are also essential.  
-   &emsp;&emsp;I divided different tasks of different stages into different methord of the pipeline class, and separate the buffer too.
+   &emsp;&emsp;I divided different tasks of different stages into different methord of the pipeline class, and separate the buffer too.   
  
-   ```python
+ 
+```python
 self.doWB()
 self.doDM()
 self.doEX()
@@ -62,15 +63,17 @@ self.bufferDM()
 self.bufferEX()
 self.bufferID()
 self.bufferIF()
-   ```
-   &emsp;&emsp;Furthermore, the ```forward``` and ```hazard``` detection are implemented below
+```   
    
-   ```python
+&emsp;&emsp;Furthermore, the ```forward``` and ```hazard``` detection are implemented below
+   
+   
+```python
 self.forwardDetec()
 self.hazardDetec()
 self.branchForwardDetec()
 self.branchDetec()
-   ```
+```
    
 2. Signal in Pipeline  
   &emsp;&emsp;All the signal in pipeline are implemented by ```dict``` type in python, I use different number express different signal
@@ -87,12 +90,12 @@ self.controlWB = {'RegWrite': -1, 'MemtoReg': -1}
   ```python
   def bufferDM(self):
 		self.DM_WB.controlBuffer = {'EX': self.EX_DM.controlBuffer['EX'].copy(), 
-									'DM': self.EX_DM.controlBuffer['DM'].copy(), 'WB': self.EX_DM.controlBuffer['WB'].copy()}
+					'DM': self.EX_DM.controlBuffer['DM'].copy(), 'WB': self.EX_DM.controlBuffer['WB'].copy()}
 		self.DM_WB.bufferDict = {'ins': self.DM.ins, 'insName': self.DM.insName,
-									'PC_bin32': self.DM.PC_bin32,
-									'readDataFromMem_bin32': self.DM.readDataFromMem_bin32, 
-									'readDataFromALU_bin32': self.DM.readDataFromALU_bin32,
-									'writeRgst_bin5': self.DM.writeRgst_bin5}
+					'PC_bin32': self.DM.PC_bin32,
+					'readDataFromMem_bin32': self.DM.readDataFromMem_bin32, 
+				        'readDataFromALU_bin32': self.DM.readDataFromALU_bin32,
+					'writeRgst_bin5': self.DM.writeRgst_bin5}
   ```
    
    
@@ -103,13 +106,13 @@ self.controlWB = {'RegWrite': -1, 'MemtoReg': -1}
 &emsp;&emsp;Here is the details.  
 		
 ```MIPS
-			lw	  $0, 0($0)  	# "write to $0"
-			lw    $1, 16($0) 	# $1 = 7fffffff
-			addi  $2, $1, 4  	# $2 = $1 + 4, "Number Overflow", $2 = 80000003
-			bne   $3, $4, flag  # ($3 = $4 = 0) if $3 != $4, jump to flag
-			xor   $1, $2, $3 	# $3 = $2 xor $1, $3 = fffffffc, next bne will jump to flag
-			j 	  0x0000002c 	# for test jumping to the front of init pc
-	flag: 	addi  $2, $1, 5  	# $2 = $1 + 5, "Number Overflow", $2 = 80000004
+	lw	  $0, 0($0)  	# "write to $0"
+	lw    $1, 16($0) 	# $1 = 7fffffff
+	addi  $2, $1, 4  	# $2 = $1 + 4, "Number Overflow", $2 = 80000003
+	bne   $3, $4, flag      # ($3 = $4 = 0) if $3 != $4, jump to flag
+	xor   $1, $2, $3 	# $3 = $2 xor $1, $3 = fffffffc, next bne will jump to flag
+	j 	  0x0000002c 	# for test jumping to the front of init pc
+flag: 	addi  $2, $1, 5  	# $2 = $1 + 5, "Number Overflow", $2 = 80000004
 ```
 
 &emsp;&emsp;Here are also some trick for forwarding.   
@@ -117,14 +120,14 @@ self.controlWB = {'RegWrite': -1, 'MemtoReg': -1}
 &emsp;&emsp;Another test case tests for the forward below overflow.
 
 ```MIPS
-		lw  $2 16($0) # $2 = ffffffff
-		lw  $3 16($0) # $3 = ffffffff
-		add $0 $2 $3
-		bne $0 $0 flag1 # if rs or rt = 0, there is no fwd
-		add $1 $2 $3
+	lw  $2 16($0)   # $2 = ffffffff
+	lw  $3 16($0)   # $3 = ffffffff
+	add $0 $2 $3
+	bne $0 $0 flag1 # if rs or rt = 0, there is no fwd
+	add $1 $2 $3
 flag1:  add $1 $2 $3
-		bne $1 $2 flag2 # test the fwd of overflow
-		sub $4 $2 $3 
+	bne $1 $2 flag2 # test the fwd of overflow
+	sub $4 $2 $3 
 flag2:  sll $0 $0 0
 ```
 
