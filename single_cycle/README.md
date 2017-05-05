@@ -6,7 +6,7 @@
 
 	&emsp;&emsp;In the function of```main()```, firstly, I transform the the content in the .bin file from hexadecimal into binary, then I get two list ```instruction``` and ```data``` which will be passed into the function ```simulator()```, furthermore another argument is ```registor``` -- a object of ```Registor``` class
 <div style="text-align: center">
-<img src="1.jpg"/>
+<img src="./src/1.jpg"/>
 
 2. Simulator
 
@@ -17,7 +17,7 @@
 	&emsp;&emsp;Furthermore, the iCnt is the index of the instruction in the intruction list, while the pc is the fixed number of an instruction. 
 </div>
 <div style="text-align: center">
-<img src="2.jpg"/>
+<img src="./src/2.jpg"/>
 </div>
 
 
