@@ -7,6 +7,7 @@
 	&emsp;&emsp;In the function of```main()```, firstly, I transform the the content in the .bin file from hexadecimal into binary, then I get two list ```instruction``` and ```data``` which will be passed into the function ```simulator()```, furthermore another argument is ```registor``` -- a object of ```Registor``` class
 <div style="text-align: center">
 <img src="1.jpg"/>
+
 2. Simulator
 
 	&emsp;&emsp;The simulator is normally wraped by a ***while*** loop, the loop control the ```cycleCnt``` and ```iCnt```(instruction counter), beacause of the class ```Instruction``` which will be reported later, we can easily get the info of every instruction we are handling currently, so we can branch every instruction into the proper branch and do the proper computation, error detection, etc.  
@@ -66,9 +67,9 @@
 	
 	```
 	if not r.errorDetection(idx = rgstIdx,
-								isCANO = True, AN = signBin(loadLoc),
-								dataLoc = loadLoc,
-								align = align, offset = loadLoc):
+				isCANO = True, AN = signBin(loadLoc),
+				dataLoc = loadLoc,
+				align = align, offset = loadLoc):
 				break
 	```
 	+ ```idx = rgstIdx```   
@@ -111,6 +112,6 @@
 			bne   $3, $4, flag  # ($3 = $4 = 0) if $3 != $4, jump to flag
 			xor   $1, $2, $3 	# $3 = $2 xor $1, $3 = fffffffc, next bne will jump to flag
 			j 	  0x0000002c 	# for test jumping to the front of init pc
-	flag: 	addi  $2, $1, 5  	# $2 = $1 + 5, "Number Overflow", $2 = 80000004
+	flag: 	        addi  $2, $1, 5  	# $2 = $1 + 5, "Number Overflow", $2 = 80000004
 
  
