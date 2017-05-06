@@ -1,2 +1,3 @@
-.DS_Store
-*/.DS_Store
+# For DS_Store in macOS
+*.DS_Store
+
